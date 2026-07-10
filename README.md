@@ -93,7 +93,7 @@ Além dos requisitos obrigatórios, o projeto possui:
 - recuperação de falhas de comunicação;
 - validações no front-end e no back-end;
 - documentação da API;
-- endpoint de disponibilidade;
+- endpoint simples de disponibilidade da API;
 - layout responsivo;
 - navegação por teclado;
 - suporte à preferência de redução de movimento;
@@ -227,7 +227,7 @@ O projeto possui:
 
 ### Cobertura do back-end
 
-A suíte do back-end valida:
+A suíte do back-end cobre:
 
 - criação de pessoa com dados válidos;
 - geração de identificador;
@@ -253,7 +253,7 @@ Os testes utilizam arquivos temporários independentes, evitando alterações no
 
 ### Cobertura do front-end
 
-Os testes do front-end verificam:
+Os testes do front-end cobrem:
 
 - regras auxiliares relacionadas à idade;
 - restrição de receitas;
