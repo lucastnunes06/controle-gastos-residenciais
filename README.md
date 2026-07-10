@@ -76,7 +76,6 @@ Acesse [http://localhost:8080](http://localhost:8080). O volume mantém os dados
 ```bash
 # API e cenários de negócio
 dotnet build LarFinance.slnx
-dotnet run --project tests/LarFinance.Tests --no-build
 
 # Interface
 cd src/LarFinance.Web
@@ -86,8 +85,6 @@ npm run format:check
 npm test
 npm run build
 ```
-
-A suíte cobre 18 cenários de negócio no back-end e 4 testes no front-end. A automação em `.github/workflows/ci.yml` repete essas verificações em cada push e pull request.
 
 ## Regras de negócio e onde estão
 
@@ -127,7 +124,6 @@ LarFinance/
 +-- src/
 |   +-- LarFinance.Api/       # API, regras e persistência
 |   +-- LarFinance.Web/       # React + TypeScript
-+-- tests/LarFinance.Tests/   # Cenários críticos do domínio
 +-- docs/                     # API e arquitetura
 +-- .github/workflows/        # Integração contínua
 +-- Dockerfile                # Publicação integrada
