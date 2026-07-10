@@ -4,7 +4,7 @@
 
 Sistema full stack para controle de gastos residenciais, desenvolvido com **ASP.NET Core**, **C#**, **React** e **TypeScript**.
 
-A aplicação permite cadastrar pessoas e transações, consultar receitas, despesas e saldos e acompanhar um resumo financeiro da residência. Além dos requisitos obrigatórios, o projeto inclui dashboard, filtros, validações no servidor, interface responsiva, documentação da API, persistência local, testes automatizados, Docker e integração contínua.
+A aplicação permite cadastrar pessoas e transações, acompanhar receitas e despesas e consultar os saldos individuais e gerais da residência. O projeto também inclui validações no servidor, interface responsiva, persistência local, testes automatizados, documentação técnica, Docker e integração contínua.
 
 ---
 
@@ -12,12 +12,12 @@ A aplicação permite cadastrar pessoas e transações, consultar receitas, desp
 
 | Área | Funcionalidades |
 | --- | --- |
-| Pessoas | Cadastro, listagem e exclusão com confirmação |
+| Pessoas | Cadastro, listagem e exclusão |
 | Transações | Cadastro e listagem de receitas e despesas |
-| Regras de negócio | Pessoa obrigatória, restrição para menores de idade e exclusão em cascata |
+| Regras de negócio | Pessoa obrigatória, restrição para menores e exclusão em cascata |
 | Totais | Receitas, despesas e saldo por pessoa, além do consolidado geral |
 | Experiência | Dashboard, filtros, estados vazios, carregamento e mensagens de erro |
-| Qualidade | 15 testes no back-end, 4 testes no front-end, lint, formatação e CI |
+| Qualidade | 15 testes no back-end, 4 testes no front-end, lint, Prettier e CI |
 | Documentação | README, documentação da API, arquitetura e exemplos de requisições |
 
 ---
@@ -29,11 +29,11 @@ A aplicação permite cadastrar pessoas e transações, consultar receitas, desp
 O sistema permite:
 
 - cadastrar uma pessoa;
-- listar todas as pessoas cadastradas;
+- listar as pessoas cadastradas;
 - excluir uma pessoa;
 - gerar automaticamente um identificador único;
 - armazenar nome e idade;
-- validar nome e faixa etária.
+- validar os dados informados.
 
 Ao excluir uma pessoa, todas as transações vinculadas a ela também são removidas.
 
@@ -42,21 +42,21 @@ Ao excluir uma pessoa, todas as transações vinculadas a ela também são remov
 O sistema permite:
 
 - cadastrar receitas e despesas;
-- listar as transações cadastradas;
-- relacionar cada transação a uma pessoa existente;
+- listar todas as transações;
+- relacionar cada transação a uma pessoa cadastrada;
 - gerar automaticamente um identificador único;
 - informar descrição, valor e tipo;
 - visualizar a pessoa responsável e a data da movimentação.
 
-Não é necessário implementar edição ou exclusão individual de transações, conforme o escopo proposto.
+A edição e a exclusão individual de transações não foram implementadas porque não fazem parte dos requisitos obrigatórios.
 
-### Regra para menores de idade
+### Restrição para menores de idade
 
-Pessoas menores de 18 anos podem cadastrar apenas transações do tipo **despesa**.
+Pessoas com menos de 18 anos podem cadastrar somente transações do tipo **despesa**.
 
-A interface antecipa essa restrição ao desabilitar a opção de receita, mas a validação definitiva também ocorre no back-end. Dessa forma, a regra não pode ser contornada por uma chamada direta à API.
+A interface antecipa essa restrição ao desabilitar a opção de receita. A regra também é validada no back-end, impedindo que seja contornada por chamadas diretas à API.
 
-Pessoas com exatamente 18 anos já podem registrar receitas.
+Pessoas com exatamente 18 anos já podem cadastrar receitas.
 
 ### Consulta de totais
 
@@ -72,17 +72,17 @@ Também são apresentados:
 - total geral de despesas;
 - saldo líquido geral.
 
-Pessoas sem transações permanecem na listagem com os valores zerados.
+Pessoas sem transações permanecem na listagem com valores zerados.
 
 ---
 
 ## Diferenciais implementados
 
-Além das funcionalidades obrigatórias, o projeto possui:
+Além dos requisitos obrigatórios, o projeto possui:
 
 - dashboard com indicadores financeiros;
 - resumo do saldo por pessoa;
-- listagem das movimentações mais recentes;
+- visualização das movimentações mais recentes;
 - filtro de transações por tipo;
 - confirmação antes da exclusão de uma pessoa;
 - aviso sobre a remoção das transações vinculadas;
@@ -92,10 +92,10 @@ Além das funcionalidades obrigatórias, o projeto possui:
 - prevenção de envios duplicados;
 - recuperação de falhas de comunicação;
 - validações no front-end e no back-end;
-- documentação Swagger e OpenAPI;
-- endpoint de disponibilidade da API;
+- documentação da API;
+- endpoint de disponibilidade;
 - layout responsivo;
-- navegação acessível por teclado;
+- navegação por teclado;
 - suporte à preferência de redução de movimento;
 - execução com Docker;
 - testes automatizados;
@@ -103,7 +103,7 @@ Além das funcionalidades obrigatórias, o projeto possui:
 
 ---
 
-## Tecnologias utilizadas
+## Tecnologias
 
 ### Back-end
 
@@ -111,19 +111,19 @@ Além das funcionalidades obrigatórias, o projeto possui:
 - ASP.NET Core
 - C#
 - Swagger e OpenAPI
-- `ProblemDetails` para respostas de erro padronizadas
+- `ProblemDetails` para respostas de erro
 - persistência local em JSON
-- `SemaphoreSlim` para sincronização de acesso
-- xUnit para testes automatizados
+- `SemaphoreSlim` para sincronização
+- xUnit
 - Microsoft.NET.Test.Sdk
 - Coverlet Collector
 
 ### Front-end
 
 - React 19
-- TypeScript
-- Vite
-- Vitest
+- TypeScript 5.9
+- Vite 8
+- Vitest 4
 - ESLint
 - Prettier
 - Lucide React
@@ -134,10 +134,10 @@ Além das funcionalidades obrigatórias, o projeto possui:
 - Docker
 - GitHub Actions
 - EditorConfig
-- integração contínua
 - build automatizado
 - testes automatizados
-- lint e verificação de formatação
+- lint
+- verificação de formatação
 
 ---
 
@@ -151,19 +151,19 @@ App_Data/larfinance.json
 
 O arquivo é criado automaticamente na primeira gravação e mantém os dados disponíveis após o encerramento da aplicação.
 
-A persistência utiliza:
+A implementação utiliza:
 
 - acesso sincronizado por `SemaphoreSlim`;
-- escrita inicial em arquivo temporário;
+- gravação inicial em arquivo temporário;
 - substituição do arquivo principal após a gravação;
-- serialização dos enums como texto;
+- serialização de enums como texto;
 - abstração por meio de `IHouseholdRepository`.
 
-Essa abordagem reduz o risco de gravações simultâneas e de arquivos parcialmente escritos.
+A escrita em arquivo temporário reduz o risco de deixar o JSON parcialmente gravado caso ocorra uma interrupção durante a operação.
 
-Como a especificação exige persistência, mas não determina um banco de dados, o armazenamento em JSON permite executar e avaliar a aplicação sem instalar serviços externos ou executar migrations.
+Como o desafio exige persistência, mas não determina um banco de dados específico, o JSON permite que a aplicação seja executada sem configuração de serviços externos ou migrations.
 
-A implementação pode ser substituída futuramente por SQLite, Entity Framework Core ou outro mecanismo de persistência sem exigir mudanças significativas nos controllers.
+A implementação pode ser substituída futuramente por SQLite, Entity Framework Core ou outro mecanismo de armazenamento sem exigir alterações significativas nos controllers.
 
 ---
 
@@ -183,19 +183,19 @@ Uma transação somente pode ser cadastrada quando o identificador informado per
 
 ### Restrição por idade
 
-Uma pessoa com menos de 18 anos pode registrar apenas despesas.
+Pessoas com menos de 18 anos podem registrar somente despesas.
 
-A regra é protegida no back-end e também antecipada pela interface.
+A interface fornece feedback antecipado, mas o back-end continua sendo a autoridade da regra.
 
 ### Exclusão em cascata
 
-Quando uma pessoa é excluída, todas as transações associadas ao seu identificador são removidas na mesma operação.
+Quando uma pessoa é excluída, todas as transações relacionadas ao seu identificador também são removidas.
 
 ### Valores monetários
 
-As transações exigem valor maior que zero e dentro do limite aceito pela aplicação.
+As transações exigem valor maior que zero e dentro do limite definido pela aplicação.
 
-Os valores utilizam o tipo `decimal`, adequado para cálculos financeiros.
+Os valores utilizam `decimal`, evitando problemas de precisão associados a `float` e `double`.
 
 ### Campos textuais
 
@@ -203,10 +203,10 @@ Nomes e descrições:
 
 - são obrigatórios;
 - possuem limites de tamanho;
-- não podem ser formados somente por espaços;
+- não podem conter apenas espaços;
 - são normalizados antes da gravação.
 
-### Cálculo dos totais
+### Totais calculados sob demanda
 
 Receitas, despesas e saldos são calculados a partir das transações persistidas.
 
@@ -214,7 +214,7 @@ Os totais não são armazenados separadamente, evitando duplicidade e inconsist�
 
 ### Datas
 
-As datas das transações são armazenadas em UTC com `DateTimeOffset`.
+As datas das transações são armazenadas em UTC utilizando `DateTimeOffset`.
 
 ---
 
@@ -222,39 +222,43 @@ As datas das transações são armazenadas em UTC com `DateTimeOffset`.
 
 O projeto possui:
 
-- **15 testes no back-end**;
-- **4 testes no front-end**.
+- **15 testes automatizados no back-end**;
+- **4 testes automatizados no front-end**.
 
-### Cenários cobertos no back-end
+### Cobertura do back-end
 
-A suíte de testes valida:
+A suíte do back-end valida:
 
 - criação de pessoa com dados válidos;
+- geração de identificador;
 - normalização do nome;
 - cadastro de despesa para menor de idade;
 - bloqueio de receita para menor de idade;
 - permissão de receita para pessoa com exatamente 18 anos;
 - rejeição de transação para pessoa inexistente;
 - exclusão de pessoa;
-- exclusão das transações vinculadas;
+- exclusão das transações relacionadas;
 - tentativa de exclusão de pessoa inexistente;
 - totais individuais;
 - totais gerais;
 - pessoa sem transações;
-- persistência entre diferentes instâncias do repositório;
-- idade fora do intervalo permitido;
-- valor monetário igual ou inferior a zero.
+- persistência entre instâncias do repositório;
+- nome obrigatório;
+- idade menor que zero;
+- idade acima do limite;
+- valor igual a zero;
+- valor negativo.
 
 Os testes utilizam arquivos temporários independentes, evitando alterações nos dados reais da aplicação.
 
-### Cenários cobertos no front-end
+### Cobertura do front-end
 
-Os testes verificam:
+Os testes do front-end verificam:
 
 - regras auxiliares relacionadas à idade;
-- comportamento da restrição de receitas;
+- restrição de receitas;
 - formatação monetária;
-- formatação de valores exibidos pela interface.
+- formatação dos valores exibidos.
 
 ---
 
@@ -262,15 +266,15 @@ Os testes verificam:
 
 | Requisito | Implementação principal | Validação |
 | --- | --- | --- |
-| Criar e listar pessoas | `PeopleController` e `JsonHouseholdRepository` | Testes e fluxo da interface |
+| Criar e listar pessoas | `PeopleController` e repositório | Testes e interface |
 | Excluir pessoa | `DeletePersonAsync` | Teste automatizado |
 | Excluir transações relacionadas | Remoção em cascata no repositório | Teste automatizado |
-| Criar e listar transações | `TransactionsController` e repositório | Testes e fluxo da interface |
-| Exigir pessoa existente | `AddTransactionAsync` | Teste com identificador inexistente |
+| Criar e listar transações | `TransactionsController` e repositório | Testes e interface |
+| Exigir pessoa existente | `AddTransactionAsync` | Teste com ID inexistente |
 | Bloquear receita para menor | Regra no servidor | Testes com 16 e 18 anos |
-| Calcular totais individuais | `GetTotalsAsync` | Testes com valores conhecidos |
+| Calcular totais individuais | `GetTotalsAsync` | Teste com valores conhecidos |
 | Calcular totais gerais | `GetTotalsAsync` | Teste consolidado |
-| Exibir pessoa sem transações | Consulta iniciada pela lista de pessoas | Teste com valores zerados |
+| Incluir pessoa sem transações | Consulta iniciada pelas pessoas | Teste com valores zerados |
 | Persistir após reiniciar | `JsonHouseholdRepository` | Teste com nova instância |
 
 ---
@@ -308,19 +312,19 @@ dotnet restore
 dotnet run --urls http://localhost:5080
 ```
 
-A API estará disponível em:
+A API ficará disponível em:
 
 ```text
 http://localhost:5080
 ```
 
-A documentação Swagger estará disponível em:
+A documentação da API poderá ser acessada em:
 
 ```text
 http://localhost:5080/swagger
 ```
 
-O documento OpenAPI estará disponível em:
+O documento OpenAPI poderá ser acessado em:
 
 ```text
 http://localhost:5080/openapi/v1.json
@@ -336,19 +340,19 @@ npm install
 npm run dev
 ```
 
-A interface estará disponível em:
+A interface ficará disponível em:
 
 ```text
 http://localhost:5173
 ```
 
-Durante o desenvolvimento, o Vite encaminha as chamadas iniciadas por `/api` para:
+Durante o desenvolvimento, o Vite encaminha as requisições iniciadas por `/api` para:
 
 ```text
 http://localhost:5080
 ```
 
-> No PowerShell, caso a execução de `npm.ps1` esteja bloqueada, os comandos também podem ser executados como `npm.cmd install`, `npm.cmd run dev` e equivalentes.
+> Caso o PowerShell bloqueie o arquivo `npm.ps1`, utilize `npm.cmd install`, `npm.cmd run dev` e os demais comandos com `npm.cmd`.
 
 ---
 
@@ -366,13 +370,13 @@ Execute o contêiner:
 docker run --rm -p 8080:8080 -v larfinance-data:/app/App_Data larfinance
 ```
 
-A aplicação estará disponível em:
+A aplicação ficará disponível em:
 
 ```text
 http://localhost:8080
 ```
 
-O volume `larfinance-data` preserva os dados mesmo que o contêiner seja removido e criado novamente.
+O volume `larfinance-data` mantém os dados mesmo que o contêiner seja removido e criado novamente.
 
 ---
 
@@ -415,7 +419,7 @@ formatação validada
 build de produção concluído
 ```
 
-No PowerShell, os mesmos comandos podem ser executados com:
+No PowerShell, os mesmos comandos podem ser executados como:
 
 ```powershell
 npm.cmd ci
@@ -437,19 +441,19 @@ O workflow está localizado em:
 
 Ele é executado automaticamente em pushes e pull requests para a branch `main`.
 
-O pipeline verifica:
+O pipeline executa:
 
 1. checkout do código;
 2. configuração do .NET;
 3. restauração das dependências .NET;
 4. build da solução;
-5. execução dos testes do back-end;
+5. testes do back-end;
 6. configuração do Node.js;
 7. instalação limpa das dependências do front-end;
-8. lint do front-end;
+8. lint;
 9. verificação de formatação;
-10. execução dos testes do front-end;
-11. build de produção do front-end.
+10. testes do front-end;
+11. build de produção.
 
 ---
 
@@ -459,13 +463,13 @@ O pipeline verifica:
 | --- | --- | --- |
 | `GET` | `/api/people` | Lista todas as pessoas |
 | `POST` | `/api/people` | Cadastra uma pessoa |
-| `DELETE` | `/api/people/{id}` | Exclui a pessoa e suas transações |
+| `DELETE` | `/api/people/{id}` | Exclui uma pessoa e suas transações |
 | `GET` | `/api/transactions` | Lista todas as transações |
 | `POST` | `/api/transactions` | Cadastra uma transação |
-| `GET` | `/api/totals` | Retorna totais individuais e gerais |
+| `GET` | `/api/totals` | Retorna os totais individuais e gerais |
 | `GET` | `/api/health` | Informa a disponibilidade da API |
 
-Exemplos detalhados de requisições e respostas estão disponíveis em:
+Exemplos completos estão disponíveis em:
 
 - [`docs/API.md`](docs/API.md)
 - [`src/LarFinance.Api/LarFinance.Api.http`](src/LarFinance.Api/LarFinance.Api.http)
@@ -506,6 +510,11 @@ Content-Type: application/json
 
 ### Cadastrar receita
 
+```http
+POST /api/transactions
+Content-Type: application/json
+```
+
 ```json
 {
   "description": "Salário",
@@ -515,7 +524,7 @@ Content-Type: application/json
 }
 ```
 
-Uma tentativa de cadastrar receita para uma pessoa menor de 18 anos será recusada pela API.
+Uma tentativa de cadastrar receita para uma pessoa com menos de 18 anos será recusada pela API.
 
 ---
 
@@ -525,11 +534,11 @@ A API utiliza respostas padronizadas no formato `ProblemDetails`.
 
 São tratados cenários como:
 
-- dados obrigatórios ausentes;
+- campos obrigatórios ausentes;
 - nome ou descrição inválidos;
-- idade fora do intervalo aceito;
+- idade fora do intervalo permitido;
 - valor igual ou inferior a zero;
-- valor acima do limite permitido;
+- valor acima do limite;
 - tipo de transação inválido;
 - pessoa inexistente;
 - receita para pessoa menor de idade;
@@ -549,7 +558,7 @@ A especificação exige que os dados permaneçam disponíveis após o encerramen
 O JSON foi escolhido para:
 
 - reduzir a configuração necessária;
-- facilitar a avaliação do projeto;
+- facilitar a avaliação;
 - evitar dependências externas;
 - permitir execução imediata;
 - atender à exigência de persistência.
@@ -558,7 +567,7 @@ O JSON foi escolhido para:
 
 O acesso aos dados é realizado por meio de `IHouseholdRepository`.
 
-Essa abstração permite substituir o armazenamento atual por SQLite, Entity Framework Core ou outro mecanismo sem exigir alterações relevantes nos controllers.
+Essa abstração permite substituir o armazenamento atual por SQLite, Entity Framework Core ou outro mecanismo sem alterar significativamente os controllers.
 
 ### Sincronização
 
@@ -578,11 +587,11 @@ Os totais são derivados das transações persistidas e não são armazenados se
 
 ### Validação em duas camadas
 
-O front-end fornece feedback imediato, enquanto o back-end continua sendo a autoridade das regras de negócio.
+O front-end oferece feedback imediato, enquanto o back-end continua sendo a autoridade das regras de negócio.
 
 ### Escopo controlado
 
-Não foram adicionados autenticação, edição de transações ou outros recursos que aumentariam a complexidade sem contribuir diretamente para os requisitos.
+Não foram adicionados autenticação, edição de transações ou recursos que aumentariam a complexidade sem contribuir diretamente para os requisitos.
 
 Mais detalhes estão disponíveis em:
 
@@ -605,7 +614,6 @@ LarFinance/
 │   │   ├── Controllers/
 │   │   ├── Models/
 │   │   ├── Persistence/
-│   │   ├── App_Data/
 │   │   └── Program.cs
 │   └── LarFinance.Web/
 │       ├── public/
@@ -633,20 +641,21 @@ LarFinance/
 
 ## Melhorias futuras
 
-Como evoluções além do escopo atual, poderiam ser implementados:
+Como evoluções além do escopo atual, podem ser consideradas:
 
 - persistência com SQLite e Entity Framework Core;
 - consultas por período;
 - filtro de transações por pessoa;
 - pesquisa por descrição;
+- ordenação das movimentações;
 - edição e exclusão de transações;
 - paginação para grandes volumes;
 - exportação de relatórios;
 - testes de integração dos endpoints;
-- ampliação dos testes de componentes do front-end;
-- observabilidade e health checks mais completos.
+- ampliação dos testes de componentes;
+- health checks mais completos.
 
-Essas melhorias não são necessárias para o atendimento dos requisitos atuais.
+Essas melhorias não são necessárias para atender aos requisitos atuais.
 
 ---
 
