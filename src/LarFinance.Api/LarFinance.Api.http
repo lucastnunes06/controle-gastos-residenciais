@@ -1,0 +1,37 @@
+@LarFinanceApi = http://localhost:5080
+
+### Saúde da API
+GET {{LarFinanceApi}}/api/health
+Accept: application/json
+
+### Lista pessoas
+GET {{LarFinanceApi}}/api/people
+Accept: application/json
+
+### Cria uma pessoa
+POST {{LarFinanceApi}}/api/people
+Content-Type: application/json
+
+{
+  "name": "Ana Souza",
+  "age": 27
+}
+
+### Lista transações
+GET {{LarFinanceApi}}/api/transactions
+Accept: application/json
+
+### Cria uma transação (substitua personId)
+POST {{LarFinanceApi}}/api/transactions
+Content-Type: application/json
+
+{
+  "description": "Supermercado",
+  "amount": 245.90,
+  "type": "Expense",
+  "personId": "00000000-0000-0000-0000-000000000000"
+}
+
+### Consulta totais
+GET {{LarFinanceApi}}/api/totals
+Accept: application/json

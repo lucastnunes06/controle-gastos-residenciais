@@ -1,0 +1,12 @@
+node_modules/
+dist/
+App_Data/
+*.user
+.vs/
+bin/
+obj/
+.env
+npm-debug.log*
+.npm-cache/
+*.tsbuildinfo
+vite.config.d.ts

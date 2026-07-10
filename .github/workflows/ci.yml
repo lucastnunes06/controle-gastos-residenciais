@@ -1,0 +1,44 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build API
+        run: dotnet build LarFinance.slnx --configuration Release
+
+      - name: Validate business rules
+        run: dotnet run --project tests/LarFinance.Tests --configuration Release --no-build
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: src/LarFinance.Web/package-lock.json
+
+      - name: Install web dependencies
+        working-directory: src/LarFinance.Web
+        run: npm ci
+
+      - name: Test web app
+        working-directory: src/LarFinance.Web
+        run: npm test
+
+      - name: Build web app
+        working-directory: src/LarFinance.Web
+        run: npm run build

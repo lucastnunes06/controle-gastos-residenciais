@@ -1,0 +1,91 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "LarFinance API",
+    "version": "1.0.0",
+    "description": "API para cadastro de pessoas, transações e consulta de totais residenciais."
+  },
+  "servers": [{ "url": "http://localhost:5080" }],
+  "paths": {
+    "/api/people": {
+      "get": {
+        "summary": "Lista todas as pessoas",
+        "responses": { "200": { "description": "Pessoas ordenadas por nome" } }
+      },
+      "post": {
+        "summary": "Cadastra uma pessoa",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreatePerson" } } }
+        },
+        "responses": {
+          "201": { "description": "Pessoa cadastrada" },
+          "400": { "description": "Dados inválidos" }
+        }
+      }
+    },
+    "/api/people/{id}": {
+      "delete": {
+        "summary": "Exclui uma pessoa e suas transações",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": {
+          "204": { "description": "Pessoa e transações removidas" },
+          "404": { "description": "Pessoa não encontrada" }
+        }
+      }
+    },
+    "/api/transactions": {
+      "get": {
+        "summary": "Lista transações da mais recente para a mais antiga",
+        "responses": { "200": { "description": "Transações cadastradas" } }
+      },
+      "post": {
+        "summary": "Cadastra uma receita ou despesa",
+        "description": "A pessoa deve existir. Menores de 18 anos podem cadastrar apenas despesas.",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CreateTransaction" } } }
+        },
+        "responses": {
+          "201": { "description": "Transação cadastrada" },
+          "400": { "description": "Dados inválidos" },
+          "422": { "description": "Regra de negócio não atendida" }
+        }
+      }
+    },
+    "/api/totals": {
+      "get": {
+        "summary": "Consulta totais por pessoa e o consolidado geral",
+        "responses": { "200": { "description": "Receitas, despesas e saldo" } }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "summary": "Verifica a disponibilidade da API",
+        "responses": { "200": { "description": "API saudável" } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreatePerson": {
+        "type": "object",
+        "required": ["name", "age"],
+        "properties": {
+          "name": { "type": "string", "minLength": 2, "maxLength": 120, "example": "Ana Souza" },
+          "age": { "type": "integer", "minimum": 0, "maximum": 130, "example": 27 }
+        }
+      },
+      "CreateTransaction": {
+        "type": "object",
+        "required": ["description", "amount", "type", "personId"],
+        "properties": {
+          "description": { "type": "string", "minLength": 2, "maxLength": 160, "example": "Supermercado" },
+          "amount": { "type": "number", "format": "decimal", "minimum": 0.01, "example": 245.90 },
+          "type": { "type": "string", "enum": ["Expense", "Income"] },
+          "personId": { "type": "string", "format": "uuid" }
+        }
+      }
+    }
+  }
+}
