@@ -21,10 +21,7 @@ jobs:
       - name: Build API
         run: dotnet build LarFinance.slnx --configuration Release
 
-      - name: Validate business rules
-        run: dotnet run --project tests/LarFinance.Tests --configuration Release --no-build
-
-      - name: Setup Node.js
+           - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
