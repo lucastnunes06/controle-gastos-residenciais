@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { api } from "./services/api";
 import { money } from "./formatters";
-import { canRegisterIncome } from "./businessRules";
 import type { Person, Tab, Totals, Tx } from "./types";
 import {
   ArrowDownRight,

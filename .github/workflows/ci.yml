@@ -19,8 +19,14 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      - name: Restore .NET dependencies
+        run: dotnet restore LarFinance.slnx
+
       - name: Build API
-        run: dotnet build LarFinance.slnx --configuration Release
+        run: dotnet build LarFinance.slnx --configuration Release --no-restore
+
+      - name: Test back-end
+        run: dotnet test LarFinance.slnx --configuration Release --no-build
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -32,6 +38,14 @@ jobs:
       - name: Install web dependencies
         working-directory: src/LarFinance.Web
         run: npm ci
+
+      - name: Lint web app
+        working-directory: src/LarFinance.Web
+        run: npm run lint
+
+      - name: Check web formatting
+        working-directory: src/LarFinance.Web
+        run: npm run format:check
 
       - name: Test web app
         working-directory: src/LarFinance.Web

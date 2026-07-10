@@ -2,4 +2,8 @@
   <Folder Name="/src/">
     <Project Path="src/LarFinance.Api/LarFinance.Api.csproj" />
   </Folder>
-  </Solution>
+
+  <Folder Name="/tests/">
+    <Project Path="tests/LarFinance.Tests/LarFinance.Tests.csproj" />
+  </Folder>
+</Solution>
